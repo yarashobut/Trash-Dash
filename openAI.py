@@ -8,7 +8,7 @@ response = client.chat.completions.create(
     {
       "role": "user",
       "content": [
-        {"type": "text", "text": "Should I put this in the combost, recycle, or trash? answer with only one word"},
+        {"type": "text", "text": "Should I put this in the compost, recycle, or trash? One word answer only."},
         {
           "type": "image_url",
           "image_url": {

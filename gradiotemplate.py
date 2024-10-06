@@ -1,8 +1,10 @@
 import gradio as gr
 from openai import OpenAI
 import base64
+
 client = OpenAI()
-rules = """Should I recycle,compost, or trash the elements in the pictures? Give a sentence answer saying what to do with each element, then give a short explanation of your answers. These are the rules that should guide in making your decision.I will provide you with information including the item that might be in the picture and information about it. 
+rules = """
+Should I recycle,compost, or trash the elements in the pictures? Give a sentence answer saying what to do with each element, then give a short explanation of your answers. These are the rules that should guide in making your decision.I will provide you with information including the item that might be in the picture and information about it. 
 Aluminum foil is Recycled. Rinse or wipe off food and liquid first.
 Baked goods are Compostable. All food scraps (including meat and dairy) are compostable.
 Aluminum Cans are Recycled. The can must be Empty and clean of food and beverage before recycling.
@@ -56,8 +58,8 @@ Tea bags are composted if you remove the staple on them
 Tea bag wrappers are Recycled if made of glossy material and Composted if made of paper.
 These are places on campus where you should put corresponding elements:
 ELECTRONICS can be donated to the Worthmore free store year-round.
-
 """
+
 def encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
@@ -65,44 +67,43 @@ def encode_image(image_path):
 def checkQuestion(image):
     base64_image = encode_image(image)
     response = client.chat.completions.create(
-    model="gpt-4-vision-preview",
-    messages=[
-        {
-        "role": "user",
-        "content": [
-            {"type": "text", "text": rules},
-            {
-            "type": "image_url",
-            "image_url": {
-                 "url": f"data:image/jpeg;base64,{base64_image}"
-            },
-            },
-        ],
-        }
-    ],
-    max_tokens=300,
+      model="gpt-4-vision-preview",
+      messages= [
+          {
+          "role": "user",
+          "content": 
+            [
+              {"type": "text", "text": rules},
+              {
+              "type": "image_url",
+              "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+              },
+            ],
+          }
+      ],
+      max_tokens=300,
     )
-
     return response.choices[0].message.content
+  
 def generalQuestion(image,question):
     base64_image = encode_image(image)
     response = client.chat.completions.create(
-    model="gpt-4-vision-preview",
-    messages=[
-        {
-        "role": "user",
-        "content": [
-            {"type": "text", "text": question},
-            {
-            "type": "image_url",
-            "image_url": {
-                 "url": f"data:image/jpeg;base64,{base64_image}"
-            },
-            },
-        ],
-        }
-    ],
-    max_tokens=300,
+      model="gpt-4-vision-preview",
+      messages=[
+          {
+          "role": "user",
+          "content": [
+              {"type": "text", "text": question},
+              {
+              "type": "image_url",
+              "image_url": {
+                   "url": f"data:image/jpeg;base64,{base64_image}"
+              },
+              },
+          ],
+          }
+      ],
+      max_tokens=300,
     )
 
     return response.choices[0].message.content

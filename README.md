@@ -1,1 +1,1 @@
-# hackathon
+A model trained with Swarthmore College specific waste disposal guidelines. Swarthmore College has specific rules on how / where to recylce, compost, and dispose of items. Whether it be a compostable napkin made by the college, or your old laptop charger, upload a picture of your item and learn how to properly dispose of it on campus!
